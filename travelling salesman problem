@@ -1,0 +1,29 @@
+import itertools
+cities = ["A", "B", "C", "D"]
+dist = {
+    ("A", "B"): 6, ("B", "A"): 6,
+    ("A", "C"): 4, ("C", "A"): 4,
+    ("A", "D"): 2, ("D", "A"): 2,
+    ("B", "C"): 3, ("C", "B"): 3,
+    ("B", "D"): 5, ("D", "B"): 5,
+    ("C", "D"): 8, ("D", "C"): 8
+}
+def route_cost(route):
+    cost = 0
+    for i in range(len(route) - 1):
+        cost += dist[(route[i], route[i+1])]
+    cost += dist[(route[-1], route[0])]  
+    return cost
+best_route = None
+best_cost = float("inf")
+for perm in itertools.permutations(cities):
+    cost = route_cost(perm)
+    if cost < best_cost:
+        best_cost = cost
+        best_route = perm
+print("Best Route:", " → ".join(best_route), "→", best_route[0])
+print("Total Cost:", best_cost)
+
+#output
+Best Route: A → C → B → D → A
+Total Cost: 14
