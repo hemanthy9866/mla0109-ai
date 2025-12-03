@@ -1,0 +1,26 @@
+def minimax(node, depth, is_max):
+    if isinstance(node, int):
+        return node
+    left, right = node
+    if is_max:
+        return max(minimax(left, depth + 1, False),
+                   minimax(right, depth + 1, False))
+    else:
+        return min(minimax(left, depth + 1, True),
+                   minimax(right, depth + 1, True))
+tree = [
+    [3, 5],    
+    [2, 9]     
+ ]
+left_value = minimax(tree[0], 1, False)
+right_value = minimax(tree[1], 1, False)
+print("Left move value:", left_value)
+print("Right move value:", right_value)
+if left_value > right_value:
+    print("👉 Best move for MAX: Go LEFT")
+else:
+    print("👉 Best move for MAX: Go RIGHT")
+#output
+Left move value: 3
+Right move value: 2
+👉 Best move for MAX: Go LEFT
