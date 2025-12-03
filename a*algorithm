@@ -1,0 +1,40 @@
+import heapq
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'D': 3, 'E': 5},
+    'C': {'F': 2},
+    'D': {'F': 1, 'E': 1},
+    'E': {'F': 2},
+    'F': {}
+}
+heuristic = {
+    'A': 7,
+    'B': 6,
+    'C': 4,
+    'D': 2,
+    'E': 1,
+    'F': 0
+}
+def a_star(start, goal):
+    open_set = []
+    heapq.heappush(open_set, (0 + heuristic[start], 0, start, [start]))
+    visited_order = []
+    while open_set:
+        f, g, current, path = heapq.heappop(open_set)
+        visited_order.append(current)
+        if current == goal:
+            return visited_order, path, g
+        for neighbor, cost in graph[current].items():
+            new_g = g + cost
+            new_f = new_g + heuristic[neighbor]
+            heapq.heappush(open_set, (new_f, new_g, neighbor, path + [neighbor]))
+    return None
+visited, best_path, best_cost = a_star('A', 'F')
+print("Node Expansion Order:", visited)
+print("Optimal Path:", best_path)
+print("Total Cost:", best_cost)
+
+#output
+Node Expansion Order: ['A', 'B', 'D', 'F']
+Optimal Path: ['A', 'B', 'D', 'F']
+Total Cost: 1 + 3 + 1 = 5
