@@ -1,0 +1,46 @@
+N = 8  # board size
+moves = [
+    (2, 1), (1, 2), (-1, 2), (-2, 1),
+    (-2, -1), (-1, -2), (1, -2), (2, -1)
+]
+def is_safe(x, y, board):
+    return 0 <= x < N and 0 <= y < N and board[x][y] == -1
+def knight_tour(step, x, y, board):
+    if step == N * N:
+        return True
+    for dx, dy in moves:
+        nx, ny = x + dx, y + dy
+        if is_safe(nx, ny, board):
+            board[nx][ny] = step
+            if knight_tour(step + 1, nx, ny, board):
+                return True
+            board[nx][ny] = -1  # backtrack
+    return False
+def solve_knights_tour(start_x=0, start_y=0):
+    board = [[-1 for _ in range(N)] for _ in range(N)]
+    board[start_x][start_y] = 0
+    if knight_tour(1, start_x, start_y, board):
+        return board
+    else:
+        return None
+solution = solve_knights_tour()
+if solution:
+    print("Knight's Tour Found:\n")
+    for row in solution:
+        print(row)
+else:
+    print("No tour exists.")
+
+#output
+Knight's Tour Found:
+
+[0, 59, 38, 33, 30, 17, 8, 63]
+[37, 34, 31, 60, 9, 62, 29, 16]
+[58, 1, 36, 39, 32, 27, 18, 7]
+[35, 48, 41, 26, 61, 10, 15, 28]
+[42, 57, 2, 49, 40, 23, 6, 19]
+[47, 50, 45, 54, 25, 20, 11, 14]
+[56, 43, 52, 3, 22, 13, 24, 5]
+[51, 46, 55, 44, 53, 4, 21, 12]
+
+=== Code Execution Successfu
