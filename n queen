@@ -1,0 +1,67 @@
+import random
+def attacking_pairs(state):
+    attacks = 0
+    n = len(state)
+    for i in range(n):
+        for j in range(i+1, n):
+            if state[i] == state[j]:          # same row
+                attacks += 1
+            if abs(state[i] - state[j]) == abs(i - j): 
+                attacks += 1
+    return attacks
+def get_neighbors(state):
+    neighbors = []
+    n = len(state)
+    for col in range(n):
+        for row in range(n):
+            if row != state[col]:
+                new_state = list(state)
+                new_state[col] = row
+                neighbors.append(new_state)
+    return neighbors
+def hill_climb(initial_state):
+    current = initial_state
+    current_cost = attacking_pairs(current)
+    while True:
+        neighbors = get_neighbors(current)
+        scored_neighbors = [(neighbor, attacking_pairs(neighbor)) for neighbor in neighbors]
+        best_neighbor, best_cost = min(scored_neighbors, key=lambda x: x[1])
+        if best_cost >= current_cost:
+            return current, current_cost
+        current, current_cost = best_neighbor, best_cost
+def hill_climb_random_restart(n, max_restarts=50):
+    for _ in range(max_restarts):
+        state = [random.randint(0, n-1) for _ in range(n)]
+        final_state, final_cost = hill_climb(state)
+        if final_cost == 0:
+            return final_state, final_cost
+    return final_state, final_cost  # best found
+def print_board(state):
+    n = len(state)
+    for r in range(n):
+        row = ""
+        for c in range(n):
+            row += " Q " if state[c] == r else " . "
+        print(row)
+    print()
+if __name__ == "__main__":
+    n = 8  
+    final_state, cost = hill_climb_random_restart(n)
+    print("Final board:")
+    print_board(final_state)
+    print("Final cost:", cost)
+    print("Valid solution found?" , cost == 0)
+
+# output
+Final board:
+ .  Q  .  .  .  .  .  . 
+ .  .  .  .  .  .  Q  . 
+ .  .  Q  .  .  .  .  . 
+ .  .  .  .  .  Q  .  . 
+ .  .  .  .  .  .  .  Q 
+ .  .  .  .  Q  .  .  . 
+ Q  .  .  .  .  .  .  . 
+ .  .  .  Q  .  .  .  . 
+
+Final cost: 0
+Valid solution found? True
