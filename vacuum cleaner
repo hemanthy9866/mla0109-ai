@@ -1,0 +1,59 @@
+Grid = [
+    [0, 1, 0],
+    [1, 0, 1],
+    [0, 1, 0]
+]
+vacuum_x, vacuum_y = 0, 0  # top-left corner
+def print_grid():
+    for row in grid:
+        print(row)
+    print()
+def clean_cell(x, y):
+    if grid[x][y] == 1:
+        print(f"Cleaning dirt at ({x},{y})")
+        grid[x][y] = 0
+    else:
+        print(f"Cell ({x},{y}) is already clean")
+def move_to(x, y):
+    global vacuum_x, vacuum_y
+    print(f"Moving to ({x},{y})")
+    vacuum_x, vacuum_y = x, y
+print("Initial Grid:")
+print_grid()
+for i in range(len(grid)):
+    for j in range(len(grid[0])):
+        move_to(i, j)      # move to each cell
+        clean_cell(i, j)   # clean if dirty
+print("\nFinal Grid After Cleaning:")
+print_grid()
+print("All dirty cells cleaned!")
+
+#output
+Initial Grid:
+[0, 1, 0]
+[1, 0, 1]
+[0, 1, 0]
+
+Moving to (0,0)
+Cell (0,0) is already clean
+Moving to (0,1)
+Cleaning dirt at (0,1)
+Moving to (0,2)
+Cell (0,2) is already clean
+Moving to (1,0)
+Cleaning dirt at (1,0)
+Moving to (1,1)
+Cell (1,1) is already clean
+Moving to (1,2)
+Cleaning dirt at (1,2)
+Moving to (2,0)
+Cell (2,0) is already clean
+Moving to (2,1)
+Cleaning dirt at (2,1)
+Moving to (2,2)
+Cell (2,2) is already clean
+Final Grid After Cleaning:
+[0, 0, 0]
+[0, 0, 0]
+[0, 0, 0]
+All dirty cells cleaned!
